@@ -10,6 +10,7 @@ use plotters::{
 use rl::{
     algo::tabular::sample_average::{SampleAverageAgent, SampleAverageAgentConfig},
     decay,
+    env::DiscreteActionSpace,
     exploration::EpsilonGreedy,
     gym::KArmedBandit,
 };
@@ -35,7 +36,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             exploration: EpsilonGreedy::new(decay::Constant::new(0.01)),
         };
         let mut agent = SampleAverageAgent::new(config);
-        agent.go(&mut env);
+        env.run(&mut agent);
+        //agent.go(&mut env);
         for (i, x) in env.take_rewards().into_iter().enumerate() {
             total_reward[1][i] += x;
         }
